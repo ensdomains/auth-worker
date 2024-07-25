@@ -1,5 +1,5 @@
-import { example } from './v1/example.js'
+import { fetchDentityFederatedToken } from './v1/dentity/fetchDentityFederatedToken.js'
 
 export const v1 = {
-  example,
+  fetchDentityFederatedToken,
 }
