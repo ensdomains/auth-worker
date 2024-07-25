@@ -32,10 +32,10 @@ jobs:
           command: deploy --env staging
           environment: staging
           secrets: |
-            DENTITY_STAGING_CLIENT_SECRET
-            DENTITY_STAGING_CLIENT_ID
+            DENTITY_CLIENT_SECRET
+            DENTITY_CLIENT_ID
         env:
-          DENTITY_STAGING_CLIENT_ID: ${{ secrets.DENTITY_STAGING_CLIENT_ID }}
-          DENTITY_STAGING_CLIENT_SECRET: ${{ secrets.DENTITY_STAGING_CLIENT_SECRET }}
+          DENTITY_CLIENT_ID: ${{ secrets.DENTITY_STAGING_CLIENT_ID }}
+          DENTITY_CLIENT_SECRET: ${{ secrets.DENTITY_STAGING_CLIENT_SECRET }}
           DENTITY_BASE_ENDPOINT: https://oidc.staging.dentity.com 
           APP_REDIRCT: https://ens.domains
