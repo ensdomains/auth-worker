@@ -5,3 +5,7 @@ compatibility_date = "2024-02-23"
 
 [env.staging]
 name = "auth-worker-staging"
+
+[env.staging.vars]
+DENTITY_BASE_ENDPOINT = "https://oidc.staging.dentity.com"
+APP_REDIRECT = "https://ens.domains"

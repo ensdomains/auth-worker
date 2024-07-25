@@ -14,7 +14,7 @@
   "private": true,
   "scripts": {
     "deploy": "wrangler deploy",
-    "dev": "wrangler dev",
+    "dev": "wrangler dev -e staging",
     "test": "NODE_OPTIONS='--experimental-vm-modules --no-warnings' vitest run"
   },
   "type": "module",
