@@ -2,6 +2,17 @@ import { json } from "itty-router/json"
 
 import type { RouteParameters } from "@/types.js"
 
+type DentityFederatedTokenResponse = {
+    "access_token": string,
+    "expires_in": number,
+    "id_token": string,
+    "scope": "openid federated_token",
+    "token_type": "Bearer",
+    "federated_token": string,
+    "ens_name": string,
+    "eth_address": string
+}
+
 export const fetchDentityFederatedToken = async (
   _request: Request,
   { env: _env, ctx: _ctx }: RouteParameters,
@@ -18,5 +29,12 @@ export const fetchDentityFederatedToken = async (
 
   const resp = await fetch(`${DENTITY_BASE_ENDPOINT}/oidc/token`, { method: 'POST', body, headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
   const data = await resp.json()
-  return json(data)
+
+  const { federated_token, ens_name, eth_address} = data as DentityFederatedTokenResponse
+
+  return json({
+    name: ens_name,
+    address: eth_address,
+    token: federated_token
+  })
 }

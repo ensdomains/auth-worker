@@ -5,7 +5,16 @@ import { http, HttpResponse} from 'msw'
 
 const restHandlers = [
   http.post('https://example.com/oidc/token', () => {
-    return HttpResponse.json({ federated_token: 'token' })
+    return HttpResponse.json({ 
+      "access_token": "access-token",
+      "expires_in": 86400,
+      "id_token": "id-token",
+      "scope": "openid federated_token",
+      "token_type": "Bearer",
+      "federated_token": "federated-token",
+      "ens_name": "name.eth",
+      "eth_address": "0xaddress"
+   })
   }),
 ]
 
@@ -27,5 +36,5 @@ test('works', async () => {
   }, ctx: {} as ExecutionContext })
   expect(response.status).toBe(200)
   // expect(response.headers.get('Content-Type')).toMatchInlineSnapshot(`"application/json; charset=utf-8"`)
-  expect(await response.json()).toEqual({ message: 'Hello, world!' })
+  expect(await response.json()).toEqual({ name: 'name.eth', address: '0xaddress', token: 'federated-token' })
 })
