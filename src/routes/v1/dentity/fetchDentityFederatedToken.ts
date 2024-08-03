@@ -32,9 +32,14 @@ export const fetchDentityFederatedToken = async (
 
   const { federated_token, ens_name, eth_address} = data as DentityFederatedTokenResponse
 
+  const url = new URL(`${DENTITY_BASE_ENDPOINT}/oidc/vp-token`)
+  url.searchParams.append('federated_token', federated_token)
+  url.searchParams.append('ens_name', ens_name)
+
   return json({
     name: ens_name,
     address: eth_address,
-    token: federated_token
+    token: federated_token,
+    verifiedPresentationUri: url.toString()
   })
 }
