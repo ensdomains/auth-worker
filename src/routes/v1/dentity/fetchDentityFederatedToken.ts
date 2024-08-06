@@ -1,6 +1,7 @@
 import { json } from "itty-router/json"
 
 import type { RouteParameters } from "@/types.js"
+import { error } from "itty-router"
 
 type DentityFederatedTokenResponse = {
     "access_token": string,
@@ -11,6 +12,8 @@ type DentityFederatedTokenResponse = {
     "federated_token": string,
     "ens_name": string,
     "eth_address": string
+    error?: string
+    error_description?: string
 }
 
 export const fetchDentityFederatedToken = async (
@@ -30,7 +33,9 @@ export const fetchDentityFederatedToken = async (
   const resp = await fetch(`${DENTITY_BASE_ENDPOINT}/oidc/token`, { method: 'POST', body, headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
   const data = await resp.json()
 
-  const { federated_token, ens_name, eth_address} = data as DentityFederatedTokenResponse
+  const { federated_token, ens_name, error: errorTitle, error_description} = data as DentityFederatedTokenResponse
+
+  if (!federated_token || !ens_name) return error(400, {error : errorTitle, error_description})
 
   const url = new URL(`${DENTITY_BASE_ENDPOINT}/oidc/vp-token`)
   url.searchParams.append('federated_token', federated_token)
@@ -38,8 +43,6 @@ export const fetchDentityFederatedToken = async (
 
   return json({
     name: ens_name,
-    address: eth_address,
-    token: federated_token,
     verifiedPresentationUri: url.toString()
   })
 }
