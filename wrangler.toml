@@ -8,4 +8,4 @@ name = "auth-worker-staging"
 
 [env.staging.vars]
 DENTITY_BASE_ENDPOINT = "https://oidc.staging.dentity.com"
-APP_REDIRECT = "https://ens.domains"
+APP_REDIRECT = "https://dentity-integration.ens-app-v3.pages.dev"
