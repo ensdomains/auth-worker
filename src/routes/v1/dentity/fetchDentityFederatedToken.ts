@@ -33,7 +33,7 @@ export const fetchDentityFederatedToken = async (
   const resp = await fetch(`${DENTITY_BASE_ENDPOINT}/oidc/token`, { method: 'POST', body, headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
   const data = await resp.json()
 
-  const { federated_token, ens_name, error: errorTitle, error_description} = data as DentityFederatedTokenResponse
+  const { federated_token, ens_name, error: errorTitle, error_description, ...rest} = data as DentityFederatedTokenResponse
 
   if (!federated_token || !ens_name) return error(400, {error : errorTitle, error_description})
 
@@ -43,6 +43,10 @@ export const fetchDentityFederatedToken = async (
 
   return json({
     name: ens_name,
-    verifiedPresentationUri: url.toString()
+    verifiedPresentationUri: url.toString(),
+    DENTITY_BASE_ENDPOINT,
+    ...rest,
+    ens_name,
+    federated_token
   })
 }
