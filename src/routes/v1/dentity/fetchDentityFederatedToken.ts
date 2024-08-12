@@ -35,7 +35,7 @@ export const fetchDentityFederatedToken = async (
 
   const { federated_token, ens_name, error: errorTitle, error_description, ...rest} = data as DentityFederatedTokenResponse
 
-  if (!federated_token || !ens_name) return error(400, {error : errorTitle, error_description})
+  if (!federated_token || !ens_name) return error(400, {error : errorTitle, error_description, DENTITY_CLIENT_ID, code, APP_REDIRECT})
 
   const url = new URL(`${DENTITY_BASE_ENDPOINT}/oidc/vp-token`)
   url.searchParams.append('federated_token', federated_token)
