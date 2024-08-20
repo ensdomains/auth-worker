@@ -1,0 +1,47 @@
+name: Deploy
+
+on: [push]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.1.20
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Deploy to production
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy --env production
+          environment: production
+          secrets: |
+            DENTITY_CLIENT_SECRET
+            DENTITY_CLIENT_ID
+        env:
+          DENTITY_CLIENT_ID: ${{ secrets.DENTITY_CLIENT_ID }}
+          DENTITY_CLIENT_SECRET: ${{ secrets.DENTITY_CLIENT_SECRET }}
+
+      - name: Deploy to staging
+        if: ${{ github.ref != 'refs/heads/main' }}
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy --env staging
+          environment: staging
+          secrets: |
+            DENTITY_CLIENT_SECRET
+            DENTITY_CLIENT_ID
+        env:
+          DENTITY_CLIENT_ID: ${{ secrets.DENTITY_STAGING_CLIENT_ID }}
+          DENTITY_CLIENT_SECRET: ${{ secrets.DENTITY_STAGING_CLIENT_SECRET }}

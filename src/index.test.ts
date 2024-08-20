@@ -32,12 +32,12 @@ test('v1 example handler for v1 example request', async () => {
     {} as Env,
     {} as ExecutionContext,
   )
-  expect(v1.example).toHaveBeenCalled()
+  expect(v1.fetchDentityFederatedToken).toHaveBeenCalled()
   expect(await response.text()).toBe('Hello, World!')
 })
 
 test('head handler for head request', async () => {
-  vi.mocked(v1.example).mockImplementation(() => {
+  vi.mocked(v1.fetchDentityFederatedToken).mockImplementation(() => {
     const response = new Response('Hello, World!')
     response.headers.set('Content-Type', 'application/json')
     response.headers.set('Custom-Header', 'HeaderValue')
@@ -51,7 +51,7 @@ test('head handler for head request', async () => {
     {} as Env,
     {} as ExecutionContext,
   )
-  expect(v1.example).toHaveBeenCalled()
+  expect(v1.fetchDentityFederatedToken).toHaveBeenCalled()
   expect(response.status).toBe(200)
   expect(response.body).toBe(null)
   expect(response.headers.get('Content-Type')).toBe('application/json')
@@ -109,7 +109,7 @@ test('not found for unsupported path', async () => {
 })
 
 test('500 error+cors for internal error', async () => {
-  vi.mocked(v1.example).mockImplementation(() => {
+  vi.mocked(v1.fetchDentityFederatedToken).mockImplementation(() => {
     throw new Error('test')
   })
   const response = await index.fetch(

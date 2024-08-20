@@ -18,9 +18,9 @@ const router = Router<IRequestStrict, [RouteParameters]>()
 router.all('*', preflight)
 
 // V1 Routes
-router.get('/v1/example', v1.example)
-router.head('/v1/example', v1.example)
-router.options('/v1/example', () => new Response(null, { status: 204 }))
+router.post('/v1/dentity/token', v1.fetchDentityFederatedToken)
+router.head('/v1/dentity/token', v1.fetchDentityFederatedToken)
+router.options('/v1/dentity/token', () => new Response(null, { status: 204 }))
 
 // 404 Fallback
 router.all('*', () => error(404, 'Not Found'))
@@ -30,9 +30,10 @@ export default {
     router
       .handle(request, { env, ctx })
       .then(stripBodyForHeadRequest(request))
-      .catch((e) => {
-        console.error('Caught error')
+      .catch((e: unknown) => {
         console.error(e)
+        const errorMsg = e instanceof Error ? e.message : ''
+        if (errorMsg) return error(400, errorMsg)
         return error(500, 'Internal Server Error')
       })
       .then(corsify),
