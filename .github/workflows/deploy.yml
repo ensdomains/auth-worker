@@ -16,12 +16,20 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      # - name: Deploy to production
-      #   if: ${{ github.ref == 'refs/heads/main' }}
-      #   uses: cloudflare/wrangler-action@v3
-      #   with:
-      #     apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      #     accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      - name: Deploy to production
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy --env production
+          environment: production
+          secrets: |
+            DENTITY_CLIENT_SECRET
+            DENTITY_CLIENT_ID
+        env:
+          DENTITY_CLIENT_ID: ${{ secrets.DENTITY_CLIENT_ID }}
+          DENTITY_CLIENT_SECRET: ${{ secrets.DENTITY_CLIENT_SECRET }}
 
       - name: Deploy to staging
         if: ${{ github.ref != 'refs/heads/main' }}
@@ -37,5 +45,3 @@ jobs:
         env:
           DENTITY_CLIENT_ID: ${{ secrets.DENTITY_STAGING_CLIENT_ID }}
           DENTITY_CLIENT_SECRET: ${{ secrets.DENTITY_STAGING_CLIENT_SECRET }}
-          DENTITY_BASE_ENDPOINT: https://oidc.staging.dentity.com 
-          APP_REDIRCT: https://ens.domains

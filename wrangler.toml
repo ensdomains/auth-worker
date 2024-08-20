@@ -2,6 +2,12 @@ name = "auth-worker"
 main = "src/index.ts"
 compatibility_date = "2024-02-23"
 
+[env.production]
+name = "auth-worker"
+
+[env.production.vars]
+DENTITY_BASE_ENDPOINT = "https://oidc.dentity.com"
+APP_REDIRECT = "https://ens.domains"
 
 [env.staging]
 name = "auth-worker-staging"
