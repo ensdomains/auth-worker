@@ -7,7 +7,7 @@ name = "auth-worker"
 
 [env.production.vars]
 DENTITY_BASE_ENDPOINT = "https://oidc.dentity.com"
-APP_REDIRECT = "https://app.ens.domains"
+APP_REDIRECT = "https://dentity-integration-producti.ens-app-v3.pages.dev"
 
 [env.staging]
 name = "auth-worker-staging"
